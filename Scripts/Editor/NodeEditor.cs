@@ -43,6 +43,9 @@ namespace XNodeEditor {
 
         /// <summary> Draws standard field editors for all public fields </summary>
         public virtual void OnBodyGUI() {
+            // Whenever you use PropertyField, you need both this,
+            // and serializedObject.ApplyModifiedProperties(); to get unity to use undo properly.
+            serializedObject.Update();
             string[] excludes = { "m_Script", "graph", "position", "ports" };
             portPositions = new Dictionary<XNode.NodePort, Vector2>();
 
@@ -54,6 +57,7 @@ namespace XNodeEditor {
                 if (excludes.Contains(iterator.name)) continue;
                 NodeEditorGUILayout.PropertyField(iterator, true);
             }
+            serializedObject.ApplyModifiedProperties();
         }
 
         public virtual int GetWidth() {
